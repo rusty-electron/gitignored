@@ -1,0 +1,69 @@
+#!/bin/sh
+
+usage()
+{
+  echo "Usage: gitignored [ -u | --update ] [ -h | --help]"
+  exit 2
+}
+
+# parse args using getopt
+PARSED_ARGUMENTS=$(getopt -a -n gitignored -o uh --long update,help -- "$@")
+VALID_ARGUMENTS=$?
+if [ "$VALID_ARGUMENTS" != "0" ]; then
+  usage
+fi
+
+eval set -- "$PARSED_ARGUMENTS"
+while :
+do
+  case "$1" in
+    -u | --update)  UPDATE=1      ; shift   ;;
+    -h | --help)    usage       ; shift   ;;
+    --) shift; break ;;
+    *) echo "Unexpected option: $1 - this should not happen."
+       usage ;;
+  esac
+done
+
+# path to the git clone directory
+CLONE_PATH="$HOME/.local/share/"gitignore
+
+# check if git dir exists
+if [ ! -d $CLONE_PATH ]; then
+    echo "gitignore repo not found in $CLONE_PATH, exiting.."
+    exit 1
+fi
+
+# update the git repository if -u flag is given
+if [[ "$UPDATE" == 1 ]]; then
+    git -C $CLONE_PATH pull
+    exit 0
+fi
+
+# choose git ignore file using fzf
+chosen=$(find $CLONE_PATH -type f -name "*.gitignore" -printf "%P\n" | fzf)
+
+if [ -z $chosen ]; then
+    echo "no option chosen, exiting.."
+    exit 1
+fi
+
+# if a gitignore file already exists
+if [ -f "./.gitignore" ]; then
+    read -p "a .gitignore file exists, replace? (y/n) or m to merge: " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Nn]$ ]]; then
+        exit 0
+    elif [[ $REPLY =~ ^[Mm]$ ]]; then
+        # copy/move candidate files to /tmp
+        cp $CLONE_PATH/$chosen /tmp/temp1.gitignore
+        mv ./.gitignore /tmp/temp2.gitignore
+        # merge and store to current dir
+        cat -n /tmp/temp2.gitignore /tmp/temp1.gitignore | sort -uk2 | sort -n | cut -f2- > ./.gitignore
+        echo "done merging"
+        exit 0
+    fi
+fi
+
+cp $CLONE_PATH/$chosen ./.gitignore
+echo "copied $chosen"
