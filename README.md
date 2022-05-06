@@ -2,11 +2,11 @@
 
 a bash script to setup default gitignore files in your projects
 
-[![asciicast](https://asciinema.org/a/a58EkK5EVkYYuzv3kgZr9zQgs.svg)](https://asciinema.org/a/a58EkK5EVkYYuzv3kgZr9zQgs)
-
 (Poor humour)
 
 *Your code probably git ignored by others, it's time their code gitignored*
+
+[![asciicast](https://asciinema.org/a/a58EkK5EVkYYuzv3kgZr9zQgs.svg)](https://asciinema.org/a/a58EkK5EVkYYuzv3kgZr9zQgs)
 
 ## dependencies
 
