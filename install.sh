@@ -1,7 +1,18 @@
 #!/bin/sh
 
-if [ $(uname) != 'Linux' ]; then
-    echo "This script is designed for linux only, sorry!"
+if [ $(uname) == 'Linux' ]; then
+    echo "Linux system detectec! \nProceding"
+    # exit 1
+elif [ $(uname) == 'Darwin' ]; then
+    echo "Mac system detected!! \nNeeded to install extra utilities."
+    brew install gnu-getopt findutils 
+    brew link --force gnu-getopt 
+    echo 'export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"' >> ~/.zshrc
+    echo 'export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"' >> ~/.zshrc
+    echo 'export PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"' >> ~/.zshrc
+    source ~/.zshrc
+else
+    echo "This script is designed for linux or mac only, sorry!"
     exit 1
 fi
 
@@ -11,6 +22,7 @@ RED='[1;31m'
 GREEN='[1;32m'
 YELLOW='[1;33m'
 CYAN='[1;36m'
+PURPLE='[0;35m'
 BOLD='[1m'
 RESET='[0m'
 
@@ -53,6 +65,14 @@ printf '%bSTEP 1:%b %bcloning the gitignore repository%b (this may take a few se
 git clone https://github.com/github/gitignore.git $CLONE_PATH/gitignore
 
 printf '\n%bSTEP 2:%b %bcopying files%b (elevated privileges are required)\n\n' $GREEN $RESET $BOLD $RESET
-$PRIV_ESC install -Dvm755 ./gitignored /usr/local/bin/gitignored
+
+if [ $(uname) == 'Linux' ]; then
+    $PRIV_ESC install -Dvm755 ./gitignored /usr/local/bin/gitignored
+elif [ $(uname) == 'Darwin' ]; then
+    $PRIV_ESC install  ./gitignored /usr/local/bin/gitignored
+else
+    echo "This script is designed for linux or mac only, sorry!"
+    exit 1
+fi
 
 printf '\n%bDONE:%b %bthanks for installing!%b\n' $GREEN $RESET $BOLD $RESET

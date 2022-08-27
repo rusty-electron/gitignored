@@ -7,7 +7,7 @@ usage()
 }
 
 # parse args using getopt
-PARSED_ARGUMENTS=$(getopt -a -n gitignored -o uh --long update,help -- "$@")
+PARSED_ARGUMENTS=$(getopt -a -n gitignored -o uh -l update,help -- "$@")
 VALID_ARGUMENTS=$?
 if [ "$VALID_ARGUMENTS" != "0" ]; then
   usage

@@ -33,10 +33,11 @@ gitignored [ -u | --update ] [ -h | --help ]
 
 ## planned features
 
-* support for other OSes
+* ~~support for other OSes~~
+    * added support for Mac Os
 * ensure the current dir is a project dir before copying
 * [optional] automatic language selection using tools like `linguist`?
 
 ## support for other OSes
 
-As of now it only works on linux, PRs for other OS support are welcome.
+Added support for Mac along with perviously linux support, PRs for other OS support are welcome.
