@@ -1,20 +1,16 @@
 #!/bin/sh
 
-if [ $(uname) != 'Linux' ]; then
-    echo "This uninstall script is designed for linux only, sorry!"
-    exit 1
-fi
-
 set -e
 
 RED='[1;31m'
 GREEN='[1;32m'
 YELLOW='[1;33m'
 CYAN='[1;36m'
+PURPLE='[0;35m'
 BOLD='[1m'
 RESET='[0m'
 
-printf '\n%b' $CYAN && cat << 'EOF'
+printf '\n%b' $PURPLE && cat << 'EOF'
 █▀▀ █ ▀█▀ █ █▀▀ █▄░█ █▀█ █▀█ █▀▀ █▀▄
 █▄█ █ ░█░ █ █▄█ █░▀█ █▄█ █▀▄ ██▄ █▄▀
 
